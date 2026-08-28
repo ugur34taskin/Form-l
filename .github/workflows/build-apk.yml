@@ -15,13 +15,13 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: 18
+        node-version: 20
 
     - name: Setup Java JDK
       uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
-        java-version: '17'
+        java-version: '21'
 
     - name: Prepare HTML Files & Build APK
       run: |
@@ -30,11 +30,12 @@ jobs:
         if [ -f DESIGN.md ]; then cp DESIGN.md www/; fi
         if [ -f screen.png ]; then cp screen.png www/; fi
         npm init -y
-        npm install @capacitor/core @capacitor/cli @capacitor/android
+        npm install @capacitor/core@latest @capacitor/cli@latest @capacitor/android@latest
         npx cap init StitchApp com.stitch.app --web-dir www
         npx cap add android
         npx cap copy android
         cd android
+        chmod +x gradlew
         ./gradlew assembleDebug
 
     - name: Upload APK Artifact
